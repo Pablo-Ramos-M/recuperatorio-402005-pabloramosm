@@ -1,0 +1,35 @@
+.nav-bar {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-element {
+    border: 1px solid rgb(124, 255, 112);
+    border-radius: 50px;
+    padding: 10px 50px;
+    background-color: rgb(124, 255, 112);
+    color: rgb(0, 0, 0);                 /* ✅ Texto blanco */
+    text-decoration: none;        /* ✅ Sacar subrayado si es <a> */
+    transition: all 0.3s ease;    /* ✅ Animación suave al cambiar */
+}
+
+.nav-element:hover {
+    background-color: rgb(75, 228, 61);      /* ✅ Fondo blanco al pasar el mouse */
+    color: black;             /* ✅ Texto verde al pasar el mouse */
+}
+
+.nav-element.active,
+.nav-element:focus,
+.nav-element:active {
+    background-color: rgb(75, 228, 61);      /* ✅ Fondo blanco al clickear */
+    color: black;             /* ✅ Texto verde al clickear */
+    outline: none;
+}
+
+.titulo-encabezado {
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
