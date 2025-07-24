@@ -31,6 +31,10 @@ Turno.init({
         type: DataTypes.TEXT,
         field: "consultorio"
     },
+    estado: {
+        type: DataTypes.TEXT,
+        field: "estado"
+    },
     idCentro: {
         type: DataTypes.INTEGER,
         field: "idCentro"

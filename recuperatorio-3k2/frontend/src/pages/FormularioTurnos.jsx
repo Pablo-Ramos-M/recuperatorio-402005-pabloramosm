@@ -123,6 +123,7 @@ function FormularioTurnos () {
                     fecha: e.fecha,
                     hora: e.hora,
                     idCentro: e.idCentro,
+                    estado: e.estado,
                     consultorio: e.consultorio
                 });
             });
@@ -133,6 +134,7 @@ function FormularioTurnos () {
                 especialidad: "",
                 fecha: "",
                 hora: "",
+                estado: "",
                 idCentro: "",
                 consultorio: ""
             });
@@ -229,6 +231,21 @@ function FormularioTurnos () {
                                         ))}
                                 </select>
                                 {errors.idCentro && <span className="text-danger">Campo obligatorio</span>}
+                        </div>
+                    </div>
+                    <div className="row g-3 mt-3">
+                        <div className="col-md-3">
+                            <label htmlFor="sel-est">Seleccione un estado: </label>
+                                <select 
+                                    id="sel-est"
+                                    className="form-select"
+                                    {...register("estado", {required: true})}>
+                                        <option key={""} value={""}>-</option>
+                                        <option key={'disponible'} value={'disponible'}>Disponible</option>
+                                        <option key={'reservado'} value={'reservado'}>Reservado</option>
+                                        <option key={'cancelado'} value={'cancelado'}>Cancelado</option>
+                                </select>
+                                {errors.estado && <span className="text-danger">Campo obligatorio</span>}
                         </div>
                     </div>
                     <div className="row g-3 mt-3">

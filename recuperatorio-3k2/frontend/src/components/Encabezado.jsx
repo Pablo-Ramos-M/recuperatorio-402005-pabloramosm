@@ -12,6 +12,7 @@ function Encabezado () {
                     <div className="nav-bar">
                         <NavLink to='/' className='nav-element'>Listado de Turnos</NavLink>
                         <NavLink to='/formulario' className='nav-element'>Crear Nuevo Turno</NavLink>
+                        <NavLink to='/popular' className='nav-element'>Popular Dia Turno</NavLink>
                     </div>
                 </div>
             </header>

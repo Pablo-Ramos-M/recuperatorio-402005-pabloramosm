@@ -78,6 +78,7 @@ const duplicarTurno = async (body) => {
 
 const crearTurno = async (body) => {
     try {
+        console.log(body);
         const response = await axios.post('/turnos', body);
         return response.data;
     } catch (error) {

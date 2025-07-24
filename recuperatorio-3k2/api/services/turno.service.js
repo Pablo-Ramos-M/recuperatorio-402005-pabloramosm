@@ -44,6 +44,8 @@ class TurnoService {
         try {
             const validacionFecha = await this.#validarFecha(body.fecha);
             const existeDuplicado = await this.#existeDuplicado(body.profesional, body.consultorio, body.fecha, body.hora);
+            const validarEstado = await this.#validarPertenenciaEstado(body.estado);
+            body.estado = validarEstado;
             if (validacionFecha && existeDuplicado) {
                 const response = await turnoRepository.crear(body);
                 return response;
@@ -60,6 +62,8 @@ class TurnoService {
     static async duplicarTurno (body) {
         try {
             const validacionFecha = await this.#validarFecha(body.fecha);
+            const validacionEstado = await this.#validarPertenenciaEstado(body.estado);
+            body.estado = validacionEstado;
             if (validacionFecha) {
                 const response = await turnoRepository.crear(body);
                 return response;
@@ -87,7 +91,8 @@ class TurnoService {
             if (fechaOriginal.getTime() !== fechaNueva.getTime()) {
                 validacionFecha = await this.#validarFecha(body.fecha);
             }
-
+            const validarEstado = await this.#validarPertenenciaEstado(body.estado);
+            body.estado = validarEstado;
             const existeDuplicado = await this.#existeUnoDistinto(body.profesional, body.consultorio, body.fecha, body.hora, id);
             if (validacionFecha && existeDuplicado) {
                 const response = await turnoRepository.actualizar(id, body);
@@ -189,7 +194,20 @@ class TurnoService {
                 return false;
             }
         } catch (error) {
-            throw new Error("Error en turno.service | EXISTE DUPLICADO " + error.message);
+            throw new Error("Error en turno.service | EXISTE UNO DISTINTO " + error.message);
+        }
+    }
+
+    static async #validarPertenenciaEstado (est) {
+        try {
+            const arrayEstados = ['disponible', 'reservado', 'cancelado']
+            if (arrayEstados.includes(est)) {
+                return est;
+            } else {
+                return 'disponible';
+            }
+        } catch (error) {
+            throw new Error("Error en turno.service | VALIDAR PERTENENCIA ESTADO " + error.message);
         }
     }
 }

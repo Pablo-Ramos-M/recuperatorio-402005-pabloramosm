@@ -13,7 +13,8 @@ function ListadoTurnos () {
         prof: "",
         espe: "",
         fechaTurno: "",
-        centro: ""
+        centro: "",
+        est: ""
     });
 
     // ------------- useNavigate -------------
@@ -44,7 +45,8 @@ function ListadoTurnos () {
                 prof: "",
                 espe: "",
                 fechaTurno: "",
-                centro: ""
+                centro: "",
+                est: ""
             });
         } catch (error) {
             throw new Error("Error en ListadoTurnos.jsx | LIMPIAR FILTROS " + error.message);
@@ -70,6 +72,18 @@ function ListadoTurnos () {
             throw new Error("Error en ListadoTurnos.jsx | ELIMINAR TURNOS " + error.message);
         }
     }
+
+    const asignarEmoji = (estTurno) => {
+        const emoji = arrayEmojis.find((e) => e.nom === estTurno);
+        return emoji.emoji;
+    }
+
+    // ------------- Array emojis -------------
+    const arrayEmojis = [
+        {nom: 'disponible', emoji: '✔️'},
+        {nom: 'reservado', emoji: '🩹'},
+        {nom: 'cancelado', emoji: '❌'},
+    ];
 
     // ------------- useEffect -------------
     useEffect(() => {
@@ -108,6 +122,19 @@ function ListadoTurnos () {
                                     value={filtros.espe}
                                     onChange={(e) => setFiltros({...filtros, espe: e.target.value})}
                                 />
+                        </div>
+                        <div className="col-md-4">
+                            <label htmlFor="sel-est">Filtrar por estado: </label>
+                                <select 
+                                    id="sel-est"
+                                    className="form-select"
+                                    value={filtros.est}
+                                    onChange={(e) => setFiltros({...filtros, est: e.target.value})}>
+                                        <option key={""} value={""}>Todos</option>
+                                        <option key={'disponible'} value={'disponible'}>Disponible</option>
+                                        <option key={'reservado'} value={'reservado'}>Reservado</option>
+                                        <option key={'cancelado'} value={'cancelado'}>Cancelado</option>
+                                    </select>
                         </div>
                     </div>
                     <div className="row g-3 mt-3">
@@ -157,6 +184,7 @@ function ListadoTurnos () {
                             <th>Fecha Turno</th>
                             <th>Hora Turno</th>
                             <th>Consultorio</th>
+                            <th>Estado</th>
                             <th>Centro</th>
                             <th>Acciones</th>
                         </tr>
@@ -169,6 +197,7 @@ function ListadoTurnos () {
                                 <td>{e.fecha}</td>
                                 <td>{e.hora}</td>
                                 <td>{e.consultorio}</td>
+                                <td>{e.estado + asignarEmoji(e.estado)}</td>
                                 <td>{e.centro?.nombre}</td>
                                 <td>
                                     <button type="button" className="btn btn-outline-danger" onClick={() => eliminar(e.idTurno, e.fecha)}>Eliminar</button>

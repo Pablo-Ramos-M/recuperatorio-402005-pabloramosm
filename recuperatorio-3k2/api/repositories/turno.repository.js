@@ -33,6 +33,7 @@ class TurnoRepository extends RepositorioBase {
                     fecha: body.fecha,
                     hora: body.hora,
                     consultorio: body.consultorio,
+                    estado: body.estado,
                     idCentro: body.idCentro
                 }
             });
@@ -75,7 +76,7 @@ class TurnoRepository extends RepositorioBase {
         }
     }
 
-    async obtenerFiltrado ({prof, espe, fechaTurno, centro} = {}) {
+    async obtenerFiltrado ({prof, espe, fechaTurno, est, centro} = {}) {
         try {
             const condiciones = [];
             if (prof) {
@@ -93,6 +94,12 @@ class TurnoRepository extends RepositorioBase {
             if (fechaTurno) {
                 condiciones.push({
                     fecha: {[Op.eq]: fechaTurno}
+                });
+            }
+
+            if (est) {
+                condiciones.push({
+                    estado: {[Op.eq]: est}
                 });
             }
 
