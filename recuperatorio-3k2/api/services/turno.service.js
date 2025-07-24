@@ -88,7 +88,7 @@ class TurnoService {
                 validacionFecha = await this.#validarFecha(body.fecha);
             }
 
-            const existeDuplicado = await this.#existeDuplicado(body.profesional, body.consultorio, body.fecha, body.hora, body.idTurno);
+            const existeDuplicado = await this.#existeUnoDistinto(body.profesional, body.consultorio, body.fecha, body.hora, id);
             if (validacionFecha && existeDuplicado) {
                 const response = await turnoRepository.actualizar(id, body);
                 return response;
@@ -131,7 +131,16 @@ class TurnoService {
 
     static async obtenerExistente (body) {
         try {
-            const response = await this.#existeDuplicado(body.profesional, body.consultorio, body.fecha, body.hora, body.idTurno);
+            const response = await this.#existeUnoDistinto(body.profesional, body.consultorio, body.fecha, body.hora, body.idTurno);
+            return response;
+        } catch (error) {
+            throw new Error("Error en turno.service | OBTENER EXISTENTE " + error.message);
+        }
+    }
+
+    static async obtenerIgualDatos (body) {
+        try {
+            const response = await this.#existeDuplicado(body.profesional, body.consultorio, body.fecha, body.hora);
             return response;
         } catch (error) {
             throw new Error("Error en turno.service | OBTENER EXISTENTE " + error.message);
@@ -160,9 +169,20 @@ class TurnoService {
         }
     }
 
-    static async #existeDuplicado (prof, cons, fechaTurno, horaTurno, id = -1) {
+    static async #existeDuplicado (prof, cons, fechaTurno, horaTurno) {
         try {
-            const duplicado = await turnoRepository.existeDuplicado(prof, cons, fechaTurno, horaTurno, id);
+            const duplicado = await turnoRepository.existeDuplicado(prof, cons, fechaTurno, horaTurno);
+            let resultado = null;
+            (duplicado === null) ? resultado = true : resultado = false;
+            return resultado;
+        } catch (error) {
+            throw new Error("Error en turno.service | EXISTE DUPLICADO " + error.message);
+        }
+    }
+
+    static async #existeUnoDistinto (prof, cons, fechaTurno, horaTurno, id) {
+        try {
+            const duplicado = await turnoRepository.existeUnoDistinto(prof, cons, fechaTurno, horaTurno, id);
             if (duplicado === null) {
                 return true;
             } else {

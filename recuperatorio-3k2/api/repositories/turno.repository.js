@@ -115,7 +115,7 @@ class TurnoRepository extends RepositorioBase {
         }
     }
 
-    async existeDuplicado (prof, cons, fechaTurno, horaTurno, id = -1) {
+    async existeUnoDistinto (prof, cons, fechaTurno, horaTurno, id) {
         try {
             const response = await Turno.findOne({
                 where: {
@@ -124,6 +124,22 @@ class TurnoRepository extends RepositorioBase {
                     fecha: fechaTurno,
                     hora: horaTurno,
                     idTurno: {[Op.ne]: id}
+                }
+            });
+            return response;
+        } catch (error) {
+            throw new Error("Error en turno.repository | EXISTE DUPLICADO " + error.message);
+        }
+    }
+
+    async existeDuplicado (prof, cons, fechaTurno, horaTurno) {
+        try {
+            const response = await Turno.findOne({
+                where: {
+                    profesional: prof,
+                    consultorio: cons,
+                    fecha: fechaTurno,
+                    hora: horaTurno
                 }
             });
             return response;

@@ -50,8 +50,17 @@ const obtenerUno = async (body) => {
 const obtenerExistente = async (body) => {
     try {
         const params = new URLSearchParams(body).toString();
-        console.log(params);
         const response = await axios.get(`/turnos/existente?${params}`);
+        return response.data;
+    } catch (error) {
+        throw new Error("Error en turnos.service Frontend | OBTENER EXISTENTE " + error.message);
+    }
+}
+
+const obtenerIgualDatos = async (body) => {
+    try {
+        const params = new URLSearchParams(body).toString();
+        const response = await axios.get(`/turnos/igualDatos?${params}`);
         return response.data;
     } catch (error) {
         throw new Error("Error en turnos.service Frontend | OBTENER EXISTENTE " + error.message);
@@ -94,5 +103,6 @@ export default {
     duplicarTurno,
     editarTurno,
     crearTurno,
-    obtenerExistente
+    obtenerExistente,
+    obtenerIgualDatos
 }

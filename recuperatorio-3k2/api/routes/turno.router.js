@@ -54,6 +54,19 @@ router.get("/existente", async (req, res) => {
     }
 });
 
+// Ruta para obtener turnos con profesional, especialidad, fecha y hora en la BD para crear
+router.get("/igualDatos", async (req, res) => {
+    try {
+        const body = req.query;
+        const turno = await turnoService.obtenerIgualDatos(body);
+        res.status(200).json(turno);
+    } catch (error) {
+        const status = error.status || 400;
+        console.error("Error en turno.router | OBTENER UNO " + error.message);
+        res.status(status).json({error: error.message});
+    }
+});
+
 // Ruta para obtener un turno por id
 router.get("/:id", async (req, res) => {
     try {

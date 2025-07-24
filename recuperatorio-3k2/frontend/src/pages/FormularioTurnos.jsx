@@ -42,11 +42,9 @@ function FormularioTurnos () {
                 consultorio: data.consultorio
             });
             const validacionFecha = await validarFecha(data.fecha);
-            const validacionExistencia = await turnosService.obtenerExistente(filtros);
-            const validacionIgual = await turnosService.obtenerUno(data);
-            console.log("Validacion Existencia: " + validacionExistencia);
-            console.log("Validacion Igual: " + validacionIgual);
             if (id) {
+                const validacionExistencia = await turnosService.obtenerExistente(filtros);
+                const validacionIgual = await turnosService.obtenerUno(data);
                 if (modo === "duplicar") {
                     if (validacionFecha === true && validacionIgual === null) {
                         await turnosService.duplicarTurno(data);
@@ -71,12 +69,13 @@ function FormularioTurnos () {
                     }
                 }
             } else {
-                if (validacionFecha === true && validacionExistencia === true) {
+                const validarDatos = await turnosService.obtenerIgualDatos(filtros);
+                if (validacionFecha === true && validarDatos === true) {
                     await turnosService.crearTurno(data);
                     navigate('/');
-                } else if (validacionFecha !== true && validacionExistencia === true) {
+                } else if (validacionFecha !== true && validarDatos === true) {
                     setErrores(validacionFecha);
-                } else if (validacionFecha === true && validacionExistencia !== true) {
+                } else if (validacionFecha === true && validarDatos !== true) {
                     setErrores("Ya existe un turno con mismo profesional, consultorio, fecha y hora...");
                 } else {
                     setErrores("Datos mal ingresados");
