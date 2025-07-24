@@ -12,6 +12,6 @@ function logger(req, res, next) {
     console.log(log); // Imprimo en consola
   });
 
-  next(); // Pasa al siguiente middleware o ruta
+  next(); // Pasa al siguiente middleware o rut
 }
 export default logger;
